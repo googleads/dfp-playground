@@ -38,8 +38,8 @@ globally install the libraries listed under "Test-only dependencies".
 ### Creating Application Credentials
 
 If you have not created a client ID and a client secret,
-please refer to the guide at
-https://developers.google.com/doubleclick-publishers/docs/authentication#webapp.
+please refer to the
+[guide](https://developers.google.com/doubleclick-publishers/docs/authentication#webapp).
 
 ### Adding Application Credentials to Google Datastore
 
@@ -53,15 +53,15 @@ the entities list.
 ### Deploying DFP Playground to Google AppEngine
 
 If you have not downloaded the Google App Engine SDK for Python,
-please do so at
-https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python.
+please do so
+[here](https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python).
 Then, in the downloaded directory, run
 `python appcfg.py -A <insert_project_id_here> -V <insert_version_here>
 update <insert_path_to_dfp_playground_root_dir_here>`,
 replacing the placeholders with the appropriate values.
 
-More info on deploying apps to AppEngine can be found at
-https://cloud.google.com/appengine/docs/python/tools/uploadinganapp.
+More info on deploying apps to AppEngine can be found
+[here](https://cloud.google.com/appengine/docs/python/tools/uploadinganapp).
 
 
 ## Live Demo
@@ -71,11 +71,11 @@ See a live demo of this project at https://dfp-playground.appspot.com.
 
 ## Where do I submit bug reports, feature requests and patches?
 
-All of these items can be submitted at
-https://github.com/googleads/dfp-playground/issues.
+All of these items can be submitted
+[here](https://github.com/googleads/dfp-playground/issues).
 
 
 ## How do I get help?
 
-Post a question to the forum for the community and API advisors:
-https://groups.google.com/forum/#!forum/google-doubleclick-for-publishers-api
+Post a question to the
+[DFP API community forum](https://groups.google.com/forum/#!forum/google-doubleclick-for-publishers-api).
