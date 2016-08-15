@@ -1,0 +1,61 @@
+md-list-item .mdl-collapse, md-list-item .mdl-collapse__button,
+md-list-item .mdl-collapse__content-wrapper {
+  width: 100%;
+}
+
+md-list-item .mdl-collapse__content {
+  text-align: left;
+  max-width: 100%;
+}
+
+md-list-item .mdl-collapse .mdl-collapse__button {
+  text-align: left;
+}
+
+.mdl-collapse a {
+  cursor: pointer;
+  color: gray;
+}
+
+.mdl-collapse.mdl-collapse--opened {
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+  margin-top: -1px;
+}
+
+.mdl-collapse.mdl-collapse--opened + .mdl-collapse.mdl-collapse--opened {
+  border-top: none;
+  margin-top: 0;
+}
+
+.mdl-collapse .mdl-collapse__content-wrapper {
+  overflow: hidden;
+}
+
+.mdl-collapse .mdl-collapse__content {
+  transition-property: margin-top;
+  transition-duration: 0.2s;
+}
+
+.mdl-collapse .mdl-collapse__icon {
+  transition-property: transform;
+  transition-duration: 0.2s;
+  color: rgba(0,0,0,0.3);
+
+  /* MDL should provide some facility for positioning icons inside list items so I don't have to do this */
+  position: absolute;
+  right: 6px;
+  margin-top: -3px;
+}
+
+.mdl-collapse.mdl-collapse--opened .mdl-collapse__icon {
+  transform: rotate(-180deg);
+}
+
+.mdl-collapse.mdl-collapse--opened .mdl-collapse__button {
+  color: teal;
+}
+
+.mdl-collapse.mdl-collapse--opened .mdl-collapse__content {
+  margin-top: 0 !important;
+}

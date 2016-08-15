@@ -1,0 +1,183 @@
+#dfpLogo {
+    height: 24px;
+    padding: 6px;
+    margin-right: 16px;
+    background: white;
+    border-radius: 50%;
+    opacity: 1;
+    transition: opacity 0.2s;
+}
+
+#dfpLogo:hover {
+    opacity: 0.7;
+}
+
+#tabsArea md-content {
+    background-color: transparent !important;
+}
+#tabsArea md-content md-tabs {
+    border: 1px solid #e1e1e1;
+}
+#tabsArea md-content md-tabs md-tab-content {
+    background: #f6f6f6;
+}
+#tabsArea md-content md-tabs md-tabs-wrapper {
+    background: white;
+}
+#tabsArea md-content h1:first-child {
+    margin-top: 0;
+}
+#tabsArea md-input-container {
+    padding-bottom: 0;
+}
+#tabsArea .remove-tab {
+    margin-bottom: 40px;
+}
+#tabsArea .demo-tab > div > div {
+    padding: 25px;
+    box-sizing: border-box;
+}
+#tabsArea .edit-form input {
+    width: 100%;
+}
+
+#tabsArea md-tabs {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+#tabsArea md-tab[disabled] {
+    opacity: 0.5;
+}
+#tabsArea label {
+    text-align: left;
+    font-size: 16px;
+}
+#tabsArea .long > input {
+    width: 264px;
+}
+#tabsArea .md-button.add-tab {
+    transform: translateY(5px);
+}
+
+#tabsArea .hint {
+    /* Position the hint */
+    position: absolute;
+    left: 2px;
+    right: auto;
+    bottom: 7px;
+    /* Copy styles from ng-messages */
+    font-size: 14px;
+    line-height: 14px;
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+    /* Set our own color */
+    color: gray;
+}
+#tabsArea .hint.ng-hide,
+#tabsArea .hint.ng-enter,
+#tabsArea .hint.ng-leave.ng-leave-active {
+    bottom: 26px;
+    opacity: 0;
+}
+#tabsArea .hint.ng-leave,
+#tabsArea .hint.ng-enter.ng-enter-active {
+    bottom: 7px;
+    opacity: 1;
+}
+
+#tabsArea md-list {
+    padding-top: 0;
+}
+#tabsArea md-list-item > p,
+#tabsArea md-list-item > .md-list-item-inner > p,
+#tabsArea md-list-item .md-list-item-inner > p,
+#tabsArea md-list-item .md-list-item-inner > .md-list-item-inner > p {
+-webkit-user-select: none;
+    /* Chrome all / Safari all */
+    -moz-user-select: none;
+    /* Firefox all */
+    -ms-user-select: none;
+    /* IE 10+ */
+    user-select: none;
+    /* Likely future */
+}
+
+md-select {
+    font-size: 16px;
+}
+
+#topRow md-select {
+    min-width: 300px;
+}
+
+.md-button {
+    height: 42px; /* 3x default font size */
+    padding: 0 10px; /* increase default padding */
+}
+
+md-tab-item.md-active {
+    font-weight: bold;
+}
+
+md-tab-item:hover,
+md-prev-button:not(.md-disabled):hover md-icon,
+md-next-button:not(.md-disabled):hover md-icon {
+    color: rgb(76,175,80);
+}
+
+md-list-item .mdl-collapse__content-wrapper {
+    max-height: 0;
+    display: none; /* to be overridden */
+    transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+}
+
+md-list-item .mdl-collapse__content {
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+md-list-item .mdl-collapse.mdl-collapse--opened .mdl-collapse__content-wrapper {
+    max-height: 100vh; /* cannot use 'none' to animate */
+    overflow: scroll;
+}
+
+.mdl-layout__header-row .mdl-layout-title,
+.mdl-layout__header-row .mdl-navigation__link,
+.md-button span {
+    color: white;
+}
+.mdl-layout__header-row a:hover {
+    color: lightgreen;
+}
+.mdl-layout__header-row .mdl-navigation ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {
+    display: inline;
+}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 4px 12px 0;
+    text-decoration: none;
+    transition: background-color .3s;
+    margin: 0 4px;
+    border-radius: 5px;
+}
+
+ul.pagination li a:hover {
+    background-color: #ddd;
+}
+
+ul.pagination a[disabled] {
+    cursor: not-allowed;
+    color: lightgray;
+}

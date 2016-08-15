@@ -1,0 +1,37 @@
+application: auto
+version: auto
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+- name: ssl
+  version: latest
+
+handlers:
+- url: /static/css
+  static_dir: static/css
+- url: /static/js
+  static_dir: static/js
+- url: /.*
+  script: dfp_playground.app
+  login: required
+  secure: always
+
+skip_files:
+# Default patterns skipped by App Engine, which must be repeated since
+# specifying skip_files overrides them otherwise.  See
+# https://developers.google.com/appengine/docs/python/config/appconfig#Skipping_Files.
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.pyo
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
