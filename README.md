@@ -5,8 +5,6 @@ to the open source community. It also demonstrates a working example of
 handling an OAuth2 web flow and good usage patterns of highly used services
 in the DFP API.
 
-[TOC]
-
 ## Overview
 
 To use the playground, users must authenticate using OAuth2 and authorize
@@ -25,15 +23,15 @@ is not fully compatible with Python 3. View the
 
 ### Register a Google AppEngine Application
 
-If you have not registered an AppEngine application, please do so at
-https://appengine.google.com.
+If you have not registered an AppEngine application, please do so
+[here](https://appengine.google.com).
 
 ### Installing Python Libraries
 
 DFP Playground relies on some dependencies listed in `requirements.txt`.
 In order to install them, you first must have
-[PIP](https://pip.pypa.io/en/stable/installing/) installed. Then, cd into
-the project directory and run `pip install -t lib -r requirements.txt`
+[PIP](https://pip.pypa.io/en/stable/installing/) installed. Then, in
+the project directory, run `pip install -t lib -r requirements.txt`
 to install the necessary Python libraries. If you also want to run tests,
 globally install the libraries listed under "Test-only dependencies".
 
@@ -57,7 +55,7 @@ the entities list.
 If you have not downloaded the Google App Engine SDK for Python,
 please do so at
 https://cloud.google.com/appengine/downloads#Google_App_Engine_SDK_for_Python.
-Then, cd into the downloaded directory and run
+Then, in the downloaded directory, run
 `python appcfg.py -A <insert_project_id_here> -V <insert_version_here>
 update <insert_path_to_dfp_playground_root_dir_here>`,
 replacing the placeholders with the appropriate values.
