@@ -37,24 +37,23 @@ def InitUser(refresh_token=None):
   Returns:
     AppUser instance of the application user.
   """
-  result = AppUser.query(AppUser.user == users.get_current_user()).fetch()
+  result = AppUser.query(
+      AppUser.user == users.get_current_user()).fetch(limit=1)
 
   if result:
     # app_user exists
     app_user = result[0]
-    if refresh_token is not None:
-      # update refresh_token if provided
+    if not app_user.refresh_token:
+      # update refresh_token if provided in the arguments
       app_user.refresh_token = refresh_token
       app_user.date_acquired = datetime.datetime.now()
-      app_user.put()
-    return app_user
   else:
     app_user = AppUser(
         user=users.get_current_user(),
         email=users.get_current_user().email(),
         refresh_token=refresh_token)
-    app_user.put()
 
+  app_user.put()
   return app_user
 
 

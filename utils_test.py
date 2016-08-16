@@ -42,7 +42,6 @@ class UtilsTest(unittest.TestCase):
     app_credential.put()
 
     self.new_app_user = users.User('johndoe@gmail.com')
-    AppUser(user=self.new_app_user, email='johndoe@gmail.com').put()
     self.existing_app_user = users.User('janedoe@gmail.com')
     AppUser(user=self.existing_app_user, email='janedoe@gmail.com',
             refresh_token='blah').put()

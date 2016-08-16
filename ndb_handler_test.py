@@ -65,9 +65,11 @@ class NdbHandlerTest(unittest.TestCase):
 
   def testInitNewUser(self):
     users.get_current_user = mock.MagicMock(return_value=self.new_app_user)
-    self.assertEqual(self.new_app_user, InitUser().user)
-    self.assertTrue(AppUser.query(
-        AppUser.user == users.get_current_user()).fetch())
+    self.assertEqual(self.new_app_user, InitUser('new token').user)
+    new_app_user_ndb = AppUser.query(
+        AppUser.user == users.get_current_user()).fetch()[0]
+    self.assertTrue(new_app_user_ndb)
+    self.assertEqual('new token', new_app_user_ndb.refresh_token)
 
   def testAppCredential(self):
     client_id, client_secret = RetrieveAppCredential()
