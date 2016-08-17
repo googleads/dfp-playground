@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Utilities for the DFP Playground Webapp."""
 
 from functools import wraps
@@ -133,23 +134,23 @@ def unpack_suds_object(d):
     dict A serializable Python dict.
   """
   out = {}
-  for k, v in asdict(d).iteritems():
-    if hasattr(v, '__keylist__'):
-      out[k] = unpack_suds_object(v)
-    elif isinstance(v, list):
-      out[k] = []
-      for item in v:
+  for key, value in asdict(d).iteritems():
+    if hasattr(value, '__keylist__'):
+      out[key] = unpack_suds_object(value)
+    elif isinstance(value, list):
+      out[key] = []
+      for item in value:
         if hasattr(item, '__keylist__'):
-          out[k].append(unpack_suds_object(item))
+          out[key].append(unpack_suds_object(item))
         else:
-          out[k].append(item)
+          out[key].append(item)
     else:
-      out[k] = v
+      out[key] = value
   return out
 
 
 def unpack_row(row, cols):
-  """Convert a Row suds object into serializable format.
+  """Convert a suds row object into serializable format.
 
   Transform a row of results objects received from the DFP API's
   Publisher Query Language Service into a Python dict.

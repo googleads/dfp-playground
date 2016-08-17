@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """View handlers for the DFP Playground."""
 
 import json
@@ -49,15 +50,17 @@ _CLIENT_ID, _CLIENT_SECRET = RetrieveAppCredential()
 socket.setdefaulttimeout(10)
 
 # initialize flow object
+_HOSTNAME = app_identity.get_default_version_hostname()
 _FLOW = client.OAuth2WebServerFlow(
     client_id=_CLIENT_ID,
     client_secret=_CLIENT_SECRET,
     scope=oauth2.GetAPIScope('dfp'),
     user_agent='DFP Playground',
-    redirect_uri='http://' + (app_identity.get_default_version_hostname() or
-                              'localhost:8008') + '/oauth2callback')
-_FLOW.params['access_type'] = 'offline'
-_FLOW.params['approval_prompt'] = 'force'
+    redirect_uri=(
+        ('https://' + _HOSTNAME) if _HOSTNAME else 'http://localhost:8008') +
+    '/oauth2callback',
+    access_type='offline',
+    approval_prompt='force')
 
 
 class MainPage(webapp2.RequestHandler):
@@ -138,7 +141,6 @@ class MakeTestNetworkPage(webapp2.RequestHandler):
 class APIViewHandler(webapp2.RequestHandler):
   """View that chooses the appropriate handler depending on the method."""
   api_handler_method_map = {
-      'networks': 'GetAllNetworks',
       'users': 'GetUsers',
       'adunits': 'GetAdUnits',
       'companies': 'GetCompanies',
@@ -161,8 +163,7 @@ class APIViewHandler(webapp2.RequestHandler):
                              _APPLICATION_NAME)
     network_code = self.request.get('network_code')
 
-    # construct PQL statement
-    where_clause = self.request.get('where') or ''
+    # parse parameters
     try:
       limit = int(self.request.get('limit', api_handler.page_limit))
     except ValueError:
@@ -173,18 +174,26 @@ class APIViewHandler(webapp2.RequestHandler):
     except ValueError:
       self.response.status = 400
       return self.response.write('Offset must be an integer')
-    statement = dfp.FilterStatement(where_clause, limit=limit, offset=offset)
 
-    try:
-      # throws KeyError if method not found
-      api_handler_func = getattr(api_handler,
-                                 self.api_handler_method_map[method])
-    except KeyError:
-      self.response.status = 400
-      self.response.write('API method not supported (%s).' % method)
+    if method == 'networks':
+      return_obj = api_handler.GetAllNetworks()
+    else:
+      # construct PQL statement
+      where_clause = self.request.get('where', '')
+      statement = dfp.FilterStatement(where_clause, limit=limit, offset=offset)
 
-    # retrieve return_obj from api_handler and modify it
-    return_obj = api_handler_func(network_code, statement)
+      try:
+        # throws KeyError if method not found
+        api_handler_func = getattr(api_handler,
+                                   self.api_handler_method_map[method])
+      except KeyError:
+        self.response.status = 400
+        self.response.write('API method not supported (%s).' % method)
+
+      # retrieve return_obj from api_handler and modify it
+      return_obj = api_handler_func(network_code, statement)
+
+    # process return_obj
     if 'columns' in return_obj:
       # special case: return_obj is from PQL Service
       cols = return_obj['columns']
@@ -232,4 +241,4 @@ class RevokeOldRefreshTokens(webapp2.RequestHandler):
     if self.request.headers.get('X-Appengine-Cron'):
       RevokeOldCredentials()
     else:
-      self.response.status = 400
+      self.response.status = 401

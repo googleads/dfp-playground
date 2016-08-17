@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Handlers to make calls against the DoubleClick for Publishers (DFP) API."""
 
 from httplib import HTTPException
@@ -39,12 +40,8 @@ class APIHandler(object):
     self.page_limit = 25
 
   @retry(HTTPException)
-
-  def GetAllNetworks(self, *args):
+  def GetAllNetworks(self):
     """Retrieves the user's available networks.
-
-    Args:
-      *args: Allow arbitrary number of args for easier use.
 
     Returns:
       list List of Network data objects.
@@ -289,10 +286,10 @@ class APIHandler(object):
       dict Dict including a list of data objects and total set size.
     """
     self.client.network_code = network_code
-    if statement is None:
-      statement = FilterStatement(limit=self.page_limit)
-    else:
+    if statement:
       statement.limit = min(statement.limit, self.page_limit)
+    else:
+      statement = FilterStatement(limit=self.page_limit)
     response = getter_func(statement.ToStatement())
     if is_pql_result:
       return {

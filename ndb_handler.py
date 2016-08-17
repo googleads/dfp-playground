@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 """Handlers for ndb operations."""
 
 import datetime
@@ -37,6 +38,7 @@ def InitUser(refresh_token=None):
   Returns:
     AppUser instance of the application user.
   """
+
   result = AppUser.query(
       AppUser.user == users.get_current_user()).fetch(limit=1)
 
