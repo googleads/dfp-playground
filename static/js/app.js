@@ -44,7 +44,7 @@ app.controller(
       var previous = null;
 
       var constructDocsURL = function(servicePath) {
-        var currentVersion = 'v201605';
+        var currentVersion = 'v201708';
         return (
             'https://developers.google.com/doubleclick-publishers/' +
             'docs/reference/' + currentVersion + '/' + servicePath);
