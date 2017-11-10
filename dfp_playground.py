@@ -32,7 +32,7 @@ from views import MakeTestNetworkPage
 from views import RevokeOldRefreshTokens
 import webapp2
 
-VERSION = '1.0.2'
+VERSION = '1.0.5'
 
 app = webapp2.WSGIApplication(
     [

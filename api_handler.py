@@ -19,6 +19,7 @@ from httplib import HTTPException
 from googleads.dfp import DfpClient
 from googleads.dfp import FilterStatement
 from googleads.oauth2 import GoogleRefreshTokenClient
+import suds.cache
 from utils import retry
 
 
@@ -36,7 +37,8 @@ class APIHandler(object):
     """
     credentials = GoogleRefreshTokenClient(client_id, client_secret,
                                            refresh_token)
-    self.client = DfpClient(credentials, application_name)
+    self.client = DfpClient(credentials, application_name,
+                            cache=suds.cache.NoCache())
     self.page_limit = 25
 
   @retry(HTTPException)

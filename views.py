@@ -156,7 +156,7 @@ class APIViewHandler(webapp2.RequestHandler):
   }
 
   def get(self, method):
-    """Handle get request."""
+    """Delegate GET request calls to the DFP API."""
     method = method.lower()
     user_ndb = InitUser()
     api_handler = APIHandler(_CLIENT_ID, _CLIENT_SECRET, user_ndb.refresh_token,
@@ -221,7 +221,7 @@ class APIViewHandler(webapp2.RequestHandler):
     self.response.write(json.dumps(return_obj))
 
   def post(self, method):
-    """Handle post request."""
+    """Delegate POST request calls to the DFP API."""
     if method == 'networks':
       user_ndb = InitUser()
       api_handler = APIHandler(_CLIENT_ID, _CLIENT_SECRET,
