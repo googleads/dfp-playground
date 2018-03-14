@@ -1,9 +1,11 @@
 var app =
     angular.module('dfpPlayground', ['ngMaterial', 'ngMessages', 'ngSanitize']);
 
-app.config(function($mdThemingProvider) {
+app.config(function($interpolateProvider, $mdThemingProvider) {
   $mdThemingProvider.theme('default').primaryPalette('green').accentPalette(
       'lime');
+  $interpolateProvider.startSymbol('{a');
+  $interpolateProvider.endSymbol('a}');
 });
 
 // Share networkCode among different controllers
@@ -218,7 +220,7 @@ app.controller(
           where: whereClause,
           limit: limit,
           offset: offset,
-          network_code: networkInfo.code
+          network_code: networkInfo.code,
         };
         var qs = $httpParamSerializer(params);
 

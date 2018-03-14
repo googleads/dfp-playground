@@ -24,6 +24,7 @@ from googleads import dfp
 from googleads import oauth2
 import jinja2
 from ndb_handler import InitUser
+from ndb_handler import ReplaceAppCredential
 from ndb_handler import RetrieveAppCredential
 from ndb_handler import RevokeOldCredentials
 from oauth2client import client
@@ -242,3 +243,20 @@ class RevokeOldRefreshTokens(webapp2.RequestHandler):
       RevokeOldCredentials()
     else:
       self.response.status = 401
+
+
+class PutCredentials(webapp2.RequestHandler):
+  """View that allows an admin user to replace credentials."""
+
+  def get(self):
+    template = _JINJA_ENVIRONMENT.get_template('create_credentials.html')
+    self.response.write(template.render())
+
+  def post(self):
+    client_id = self.request.POST['client_id']
+    client_secret = self.request.POST['client_secret']
+
+    ReplaceAppCredential(client_id, client_secret)
+
+    self.response.write(
+        'Success! Restart the server to load these credentials.')

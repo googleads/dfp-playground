@@ -1,29 +1,27 @@
 {% extends "base_template.html" %}
 {% block content %}
 
-{% raw %}
 <div ng-controller="tabsCtrl" ng-cloak>
 
-  <div class="mdl-grid" id="topRow">
-    <div ng-controller="networkCtrl" class="md-padding">
+  <div ng-controller="networkCtrl" class="md-padding">
+    <div class="mdl-grid" id="topRow">
       <md-input-container>
         <label>Selected Network</label>
         <md-select ng-model="networkInfo.code">
-          <md-option ng-repeat="network in networkInfo.networks" ng-value="network.networkCode">{{network.displayName}} - {{network.networkCode}}</md-option>
+          <md-option ng-repeat="network in networkInfo.networks" ng-value="network.networkCode">{a network.displayName a} - {a network.networkCode a}</md-option>
         </md-select>
       </md-input-container>
 
-      <a target="_blank" href="https://www.google.com/dfp/{{networkInfo.code}}"><md-button class="md-primary md-raised" ng-disabled="!networkInfo.networks.length">View Network</md-button></a>
+      <a target="_blank" href="https://www.google.com/dfp/{a networkInfo.code a}"><md-button class="md-primary md-raised" ng-disabled="!networkInfo.networks.length">View Network</md-button></a>
     </div>
   </div>
-
   <div id="tabsArea">
     <md-content class="md-padding">
       <md-tabs md-selected="selectedIndex" md-border-bottom="" md-autoselect="" md-dynamic-height>
-        <md-tab ng-repeat="tab in tabs" label="{{tab.title}}">
-          <div class="demo-tab tab{{$index%4}}" style="padding: 25px; text-align: center;">
+        <md-tab ng-repeat="tab in tabs" label="{a tab.title a}">
+          <div class="demo-tab tab{a $index%4 a}" style="padding: 25px; text-align: center;">
             <div class="mdl-grid md-padding">
-              <a target="_blank" href="{{tab.docsinfo}}"><md-button class="md-primary md-raised">Documentation</md-button></a>
+              <a target="_blank" href="{a tab.docsinfo a}"><md-button class="md-primary md-raised">Documentation</md-button></a>
             </div>
 
             <form name="paramsForm" class="mdl-grid md-padding" ng-submit="makeNewRequest(tab.route, tab.whereClause, limit, offset)">
@@ -49,11 +47,13 @@
               <md-input-container class="md-block" ng-if="!!tab.routes">
                 <label>Filter by</label>
                 <md-select ng-model="tab.route">
-                  <md-option ng-repeat="route in tab.routes" value="{{route.route}}">{{route.name}}</md-option>
+                  <md-option ng-repeat="route in tab.routes" value="{a route.route a}">{a route.name a}</md-option>
                 </md-select>
               </md-input-container>
 
-              <md-button class="md-primary md-raised" type="submit" ng-disabled="paramsForm.$invalid || (!!tab.routes && !tab.route)">Submit Query</md-button>
+              <md-button class="md-primary md-raised" type="submit" ng-disabled="paramsForm.$invalid || (!!tab.routes && !tab.route)">
+                Submit Query
+              </md-button>
             </form>
 
             <hr ng-if="!!tab.results" />
@@ -65,7 +65,7 @@
               <div class="mdl-card__title">
                 <h2 class="mdl-card__title-text">Error</h2>
               </div>
-              <div class="mdl-card__supporting-text">{{tab.errormsg}}</div>
+              <div class="mdl-card__supporting-text">{a tab.errormsg a}</div>
             </div>
 
             <!-- No results message -->
@@ -79,18 +79,18 @@
             <!-- MD List for results -->
             <md-list ng-if="tab.route != 'pql' && !!tab.results.length">
               <md-list-item>
-                <h6 style="font-weight: bold; padding-left: 18px;">{{tab.displayattrname}}</h6>
+                <h6 style="font-weight: bold; padding-left: 18px;">{a tab.displayattrname a}</h6>
               </md-list-item>
 
               <md-list-item ng-repeat="result in tab.results">
                 <div class="mdl-collapse mdl-js-accordion">
                   <a class="mdl-collapse__button md-button md-ink-ripple">
                     <i class="material-icons mdl-collapse__icon mdl-animation--default">expand_more</i>
-                    {{result[tab.displayattr]}}
+                    {a result[tab.displayattr] a}
                   </a>
                   <div class="mdl-collapse__content-wrapper">
                     <div class="mdl-collapse__content mdl-animation--default md-padding">
-                      <pre>{{result|json}}</pre>
+                      <pre>{a result|json a}</pre>
                     </div>
                   </div>
                 </div>
@@ -104,14 +104,14 @@
                   <thead class="md-head">
                     <tr class="md-row">
                       <th md-column ng-repeat="column in tab.columns">
-                        {{column}}
+                        {a column a}
                       </th>
                     </tr>
                   </thead>
                   <tbody class="md-body">
                     <tr class="md-row" ng-repeat="result in tab.results">
                       <td class="md-cell" ng-repeat="column in tab.columns">
-                        {{result[column]}}
+                        {a result[column] a}
                       </td>
                     </tr>
                   </tbody>
@@ -123,7 +123,7 @@
             <ul class="pagination" ng-if="!!tab.pages.length">
               <li><a href="#" ng-click="navigateToPage(tab, 1)" ng-disabled="tab.pageNum <= 1"><i class="material-icons">first_page</i></a></li>
               <li><a href="#" ng-click="navigateToPage(tab, tab.pageNum-1)" ng-disabled="tab.pageNum <= 1"><i class="material-icons">chevron_left</i></a></li>
-              <li><a style="font-weight: bold;">Page {{tab.pageNum}} of {{tab.pages.length}}</a></li>
+              <li><a style="font-weight: bold;">Page {a tab.pageNum a} of {a tab.pages.length a}</a></li>
               <li><a href="#" ng-click="navigateToPage(tab, tab.pageNum+1)" ng-disabled="tab.pageNum >= tab.pages.length"><i class="material-icons">chevron_right</i></a></li>
               <li><a href="#" ng-click="navigateToPage(tab, tab.pages.length)" ng-disabled="tab.pageNum >= tab.pages.length"><i class="material-icons">last_page</i></a></li>
             </ul>
@@ -134,6 +134,5 @@
   </div>
 
 </div>
-{% endraw %}
 
 {% endblock %}

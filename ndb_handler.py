@@ -83,10 +83,25 @@ def RetrieveAppCredential():
     tuple A tuple of (client id, client secret)
   """
   try:
-    app_credential = AppCredential.query().fetch(limit=1)[0]
-    return (app_credential.client_id, app_credential.client_secret)
+    found_credentials = AppCredential.query().fetch(limit=1)
+    if found_credentials:
+      app_credential = found_credentials[0]
+      return (app_credential.client_id, app_credential.client_secret)
+    else:
+      return (None, None)
   except BadArgumentError, e:
     # allow opensource test cases to run
     logging.warning('Could not retrieve AppCredential: %s', e)
     logging.warning('Disregard if you are running tests')
     return (None, None)
+
+
+def ReplaceAppCredential(client_id, client_secret):
+  found_credentials = AppCredential.query().fetch(limit=1)
+  if found_credentials:
+    found_credentials[0].key.delete()
+
+  new_credential = AppCredential()
+  new_credential.client_id = client_id
+  new_credential.client_secret = client_secret
+  new_credential.put()

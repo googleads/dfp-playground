@@ -21,6 +21,7 @@ import mock
 from models import AppCredential
 from models import AppUser
 from ndb_handler import InitUser
+from ndb_handler import ReplaceAppCredential
 from ndb_handler import RetrieveAppCredential
 from ndb_handler import RevokeOldCredentials
 
@@ -76,6 +77,20 @@ class NdbHandlerTest(unittest.TestCase):
     client_id, client_secret = RetrieveAppCredential()
     self.assertEqual('1', client_id)
     self.assertEqual('secret', client_secret)
+
+  def testReplaceAppCredential(self):
+    ReplaceAppCredential('new_id', 'new_secret')
+    client_id, client_secret = RetrieveAppCredential()
+    self.assertEqual('new_id', client_id)
+    self.assertEqual('new_secret', client_secret)
+
+  def testReplaceAppCredentialWithNoOriginal(self):
+    AppCredential.query().fetch()[0].key.delete()
+
+    ReplaceAppCredential('new_id', 'new_secret')
+    client_id, client_secret = RetrieveAppCredential()
+    self.assertEqual('new_id', client_id)
+    self.assertEqual('new_secret', client_secret)
 
   def testRevokeOldUserCredentials(self):
     users.get_current_user = mock.MagicMock(return_value=self.old_user)

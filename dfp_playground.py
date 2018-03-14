@@ -29,6 +29,7 @@ from views import LoginCallback
 from views import LoginErrorPage
 from views import MainPage
 from views import MakeTestNetworkPage
+from views import PutCredentials
 from views import RevokeOldRefreshTokens
 import webapp2
 
@@ -43,5 +44,6 @@ app = webapp2.WSGIApplication(
         webapp2.Route('/tasks/revoke', RevokeOldRefreshTokens),
         webapp2.Route('/make-test-network', MakeTestNetworkPage),
         webapp2.Route('/api/<method>', handler=APIViewHandler),
+        webapp2.Route('/tasks/put-credentials', PutCredentials)
     ],
     debug=True)
