@@ -73,6 +73,7 @@ class MainPage(webapp2.RequestHandler):
     user = users.get_current_user()
     user_email = user.email()
     logout_url = users.create_logout_url('/')
+    user_ndb = InitUser()
 
     template = _JINJA_ENVIRONMENT.get_template('index_page.html')
     self.response.write(
@@ -107,8 +108,8 @@ class LoginCallback(webapp2.RequestHandler):
       user_ndb = InitUser(credentials.refresh_token)
 
       # check if user has any networks
-      api_handler = APIHandler(_CLIENT_ID, _CLIENT_SECRET,
-                               user_ndb.refresh_token, _APPLICATION_NAME)
+      api_handler = APIHandler(
+          _CLIENT_ID, _CLIENT_SECRET, user_ndb, _APPLICATION_NAME)
       networks = api_handler.GetAllNetworks()
       if not networks:
         # if user has no networks, redirect to ask if one should be made
@@ -160,8 +161,8 @@ class APIViewHandler(webapp2.RequestHandler):
     """Delegate GET request calls to the DFP API."""
     method = method.lower()
     user_ndb = InitUser()
-    api_handler = APIHandler(_CLIENT_ID, _CLIENT_SECRET, user_ndb.refresh_token,
-                             _APPLICATION_NAME)
+    api_handler = APIHandler(
+        _CLIENT_ID, _CLIENT_SECRET, user_ndb, _APPLICATION_NAME)
     network_code = self.request.get('network_code')
 
     # parse parameters
@@ -225,8 +226,8 @@ class APIViewHandler(webapp2.RequestHandler):
     """Delegate POST request calls to the DFP API."""
     if method == 'networks':
       user_ndb = InitUser()
-      api_handler = APIHandler(_CLIENT_ID, _CLIENT_SECRET,
-                               user_ndb.refresh_token, _APPLICATION_NAME)
+      api_handler = APIHandler(
+          _CLIENT_ID, _CLIENT_SECRET, user_ndb, _APPLICATION_NAME)
       api_handler.MakeTestNetwork()
       return self.redirect('/')
     else:

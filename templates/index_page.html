@@ -15,122 +15,135 @@
       <a target="_blank" href="https://www.google.com/dfp/{a networkInfo.code a}"><md-button class="md-primary md-raised" ng-disabled="!networkInfo.networks.length">View Network</md-button></a>
     </div>
   </div>
-  <div id="tabsArea">
-    <md-content class="md-padding">
-      <md-tabs md-selected="selectedIndex" md-border-bottom="" md-autoselect="" md-dynamic-height>
-        <md-tab ng-repeat="tab in tabs" label="{a tab.title a}">
-          <div class="demo-tab tab{a $index%4 a}" style="padding: 25px; text-align: center;">
-            <div class="mdl-grid md-padding">
-              <a target="_blank" href="{a tab.docsinfo a}"><md-button class="md-primary md-raised">Documentation</md-button></a>
+
+  <div id="tabsArea" class="mdl-grid">
+      <div class="mdl-cell mdl-cell--3-col">
+      <ul class="mdl-list service-list">
+        <li class="mdl-list__item">
+          Select a Service
+        </li>
+        <li class="mdl-list__item" ng-repeat="tab in tabs">
+          <md-button class="mdl-list__item-primary-content mdl-color--grey-200" ng-class="{'selected-service': $index == selectedIndex}" ng-click="setTabIndex($index)">
+            <div class="mdl-color-text--grey-800">
+            {a tab.title a}
             </div>
+          </md-button>
+        </li>
+      </ul>
+      </div>
+      <div class="mdl-cell mdl-cell--9-col mdl-shadow--6dp">
+        <div class="mdl-grid md-padding">
+          <a target="_blank" href="{a getCurrentTab().docsinfo a}">
+            <md-button class="md-primary md-raised">
+              Open documentation for {a getCurrentTab().title a}
+            </md-button>
+          </a>
+        </div>
 
-            <form name="paramsForm" class="mdl-grid md-padding" ng-submit="makeNewRequest(tab.route, tab.whereClause, limit, offset)">
-              <md-input-container class="md-block" style="width: 45%;">
-                <label for="where">Where Clause</label>
-                <input name="where" ng-model="tab.whereClause" />
-                <div class="hint">Filter returned items.</div>
-              </md-input-container>
+        <form name="paramsForm" class="mdl-grid md-padding" ng-submit="makeNewRequest(getCurrentTab().route, getCurrentTab().whereClause, limit, offset)">
+          <md-input-container class="md-block" style="width: 45%;">
+            <label for="where">Where Clause</label>
+            <input name="where" ng-model="getCurrentTab().whereClause" />
+            <div class="hint">Filter returned items.</div>
+          </md-input-container>
 
-              <md-input-container class="md-block" style="width: 15%;">
-                <label for="limit">Limit</label>
-                <input name="limit" ng-model="limit" type="number" min="1" />
-                <div class="hint">Max number of items.</div>
-              </md-input-container>
+          <md-input-container class="md-block" style="width: 15%;">
+            <label for="limit">Limit</label>
+            <input name="limit" ng-model="limit" type="number" min="1" />
+            <div class="hint">Max number of items.</div>
+          </md-input-container>
 
-              <md-input-container class="md-block" style="width: 15%;">
-                <label for="offset">Offset</label>
-                <input name="offset" ng-model="offset" type="number" min="0" />
-                <div class="hint">Number of items to skip.</div>
-              </md-input-container>
+          <md-input-container class="md-block" style="width: 15%;">
+            <label for="offset">Offset</label>
+            <input name="offset" ng-model="offset" type="number" min="0" />
+            <div class="hint">Start at item.</div>
+          </md-input-container>
 
-              <!-- if multiple routes are specified -->
-              <md-input-container class="md-block" ng-if="!!tab.routes">
-                <label>Filter by</label>
-                <md-select ng-model="tab.route">
-                  <md-option ng-repeat="route in tab.routes" value="{a route.route a}">{a route.name a}</md-option>
-                </md-select>
-              </md-input-container>
+          <!-- if multiple routes are specified -->
+          <md-input-container class="md-block" ng-if="!!getCurrentTab().routes">
+            <label>Filter by</label>
+            <md-select ng-model="getCurrentTab().route">
+              <md-option ng-repeat="route in getCurrentTab().routes" value="{a route.route a}">{a route.name a}</md-option>
+            </md-select>
+          </md-input-container>
 
-              <md-button class="md-primary md-raised" type="submit" ng-disabled="paramsForm.$invalid || (!!tab.routes && !tab.route)">
-                Submit Query
-              </md-button>
-            </form>
+          <md-button class="md-primary md-raised" type="submit" ng-disabled="paramsForm.$invalid || (!!getCurrentTab().routes && !getCurrentTab().route)">
+            Submit Query
+          </md-button>
+        </form>
 
-            <hr ng-if="!!tab.results" />
+        <hr ng-if="!!getCurrentTab().results" />
 
-            <md-progress-circular md-mode="indeterminate" md-diameter="96" ng-if="!!tab.loading"></md-progress-circular>
+        <md-progress-circular md-mode="indeterminate" md-diameter="96" ng-if="!!getCurrentTab().loading"></md-progress-circular>
 
-            <!-- Error message -->
-            <div class="mdl-card" ng-if="!!tab.errormsg">
-              <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">Error</h2>
-              </div>
-              <div class="mdl-card__supporting-text">{a tab.errormsg a}</div>
-            </div>
-
-            <!-- No results message -->
-            <div class="mdl-card" ng-if="!!tab.empty">
-              <div class="mdl-card__title">
-                <h2 class="mdl-card__title-text">No results found</h2>
-              </div>
-              <div class="mdl-card__supporting-text">Try modifying some parameters.</div>
-            </div>
-
-            <!-- MD List for results -->
-            <md-list ng-if="tab.route != 'pql' && !!tab.results.length">
-              <md-list-item>
-                <h6 style="font-weight: bold; padding-left: 18px;">{a tab.displayattrname a}</h6>
-              </md-list-item>
-
-              <md-list-item ng-repeat="result in tab.results">
-                <div class="mdl-collapse mdl-js-accordion">
-                  <a class="mdl-collapse__button md-button md-ink-ripple">
-                    <i class="material-icons mdl-collapse__icon mdl-animation--default">expand_more</i>
-                    {a result[tab.displayattr] a}
-                  </a>
-                  <div class="mdl-collapse__content-wrapper">
-                    <div class="mdl-collapse__content mdl-animation--default md-padding">
-                      <pre>{a result|json a}</pre>
-                    </div>
-                  </div>
-                </div>
-              </md-list-item>
-            </md-list>
-
-            <!-- MD Table for PQL results -->
-            <md-card ng-if="tab.route == 'pql' && !!tab.columns">
-              <md-table-container>
-                <table class="md-table">
-                  <thead class="md-head">
-                    <tr class="md-row">
-                      <th md-column ng-repeat="column in tab.columns">
-                        {a column a}
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="md-body">
-                    <tr class="md-row" ng-repeat="result in tab.results">
-                      <td class="md-cell" ng-repeat="column in tab.columns">
-                        {a result[column] a}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </md-table-container>
-            </md-card>
-
-            <!-- Pagination -->
-            <ul class="pagination" ng-if="!!tab.pages.length">
-              <li><a href="#" ng-click="navigateToPage(tab, 1)" ng-disabled="tab.pageNum <= 1"><i class="material-icons">first_page</i></a></li>
-              <li><a href="#" ng-click="navigateToPage(tab, tab.pageNum-1)" ng-disabled="tab.pageNum <= 1"><i class="material-icons">chevron_left</i></a></li>
-              <li><a style="font-weight: bold;">Page {a tab.pageNum a} of {a tab.pages.length a}</a></li>
-              <li><a href="#" ng-click="navigateToPage(tab, tab.pageNum+1)" ng-disabled="tab.pageNum >= tab.pages.length"><i class="material-icons">chevron_right</i></a></li>
-              <li><a href="#" ng-click="navigateToPage(tab, tab.pages.length)" ng-disabled="tab.pageNum >= tab.pages.length"><i class="material-icons">last_page</i></a></li>
-            </ul>
+        <!-- Error message -->
+        <div class="mdl-card" ng-if="!!getCurrentTab().errormsg">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">Error</h2>
           </div>
-        </md-tab>
-      </md-tabs>
-    </md-content>
+          <div class="mdl-card__supporting-text">{a getCurrentTab().errormsg a}</div>
+        </div>
+
+        <!-- No results message -->
+        <div class="mdl-card" ng-if="!!getCurrentTab().empty">
+          <div class="mdl-card__title">
+            <h2 class="mdl-card__title-text">No results found</h2>
+          </div>
+          <div class="mdl-card__supporting-text">Try modifying some parameters.</div>
+        </div>
+
+        <!-- MD List for results -->
+        <md-list ng-if="getCurrentTab().route != 'pql' && !!getCurrentTab().results.length">
+          <md-list-item>
+            <h6 style="font-weight: bold; padding-left: 18px;">{a getCurrentTab().displayattrname a}</h6>
+          </md-list-item>
+
+          <md-list-item ng-repeat="result in getCurrentTab().results">
+            <div class="mdl-collapse mdl-js-accordion">
+              <a class="mdl-collapse__button md-button md-ink-ripple">
+                <i class="material-icons mdl-collapse__icon mdl-animation--default">expand_more</i>
+                {a result[getCurrentTab().displayattr] a}
+              </a>
+              <div class="mdl-collapse__content-wrapper">
+                <div class="mdl-collapse__content mdl-animation--default md-padding">
+                  <pre>{a result|json a}</pre>
+                </div>
+              </div>
+            </div>
+          </md-list-item>
+        </md-list>
+
+        <!-- MD Table for PQL results -->
+        <md-card ng-if="getCurrentTab().route == 'pql' && !!getCurrentTab().columns">
+          <md-table-container>
+            <table class="md-table">
+              <thead class="md-head">
+                <tr class="md-row">
+                  <th md-column ng-repeat="column in getCurrentTab().columns">
+                    {a column a}
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="md-body">
+                <tr class="md-row" ng-repeat="result in getCurrentTab().results">
+                  <td class="md-cell" ng-repeat="column in getCurrentTab().columns">
+                    {a result[column] a}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </md-table-container>
+        </md-card>
+
+        <!-- Pagination -->
+        <ul class="pagination" ng-if="!!getCurrentTab().pages.length">
+          <li><a href="#" ng-click="navigateToPage(tab, 1)" ng-disabled="getCurrentTab().pageNum <= 1"><i class="material-icons">first_page</i></a></li>
+          <li><a href="#" ng-click="navigateToPage(tab, getCurrentTab().pageNum-1)" ng-disabled="getCurrentTab().pageNum <= 1"><i class="material-icons">chevron_left</i></a></li>
+          <li><a style="font-weight: bold;">Page {a getCurrentTab().pageNum a} of {a getCurrentTab().pages.length a}</a></li>
+          <li><a href="#" ng-click="navigateToPage(tab, getCurrentTab().pageNum+1)" ng-disabled="getCurrentTab().pageNum >= getCurrentTab().pages.length"><i class="material-icons">chevron_right</i></a></li>
+          <li><a href="#" ng-click="navigateToPage(tab, getCurrentTab().pages.length)" ng-disabled="getCurrentTab().pageNum >= getCurrentTab().pages.length"><i class="material-icons">last_page</i></a></li>
+        </ul>
+      </div>
   </div>
 
 </div>

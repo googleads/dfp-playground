@@ -42,14 +42,11 @@ app.controller(
       $scope.networkInfo = networkInfo;
       $scope.tabs = [];
       $scope.selectedIndex = 0;
-      var selected = null;
-      var previous = null;
 
       var constructDocsURL = function(servicePath) {
-        var currentVersion = 'v201708';
         return (
             'https://developers.google.com/doubleclick-publishers/' +
-            'docs/reference/' + currentVersion + '/' + servicePath);
+            'docs/reference/latest/' + servicePath);
       };
       $scope.availableServices = [
         {
@@ -167,11 +164,6 @@ app.controller(
       $scope.limit = 100;
       $scope.offset = 0;
 
-      $scope.$watch('selectedIndex', function(current, old) {
-        previous = selected;
-        selected = $scope.tabs[current];
-      });
-
       var addTab = function(service) {
         var newTab = {
           title: service.name,
@@ -215,12 +207,20 @@ app.controller(
         tab.pageNum = 1;
       };
 
+      $scope.getCurrentTab = function() {
+        return $scope.tabs[$scope.selectedIndex];
+      };
+
+      $scope.setTabIndex = function(idx) {
+        $scope.selectedIndex = idx;
+      };
+
       $scope.makeNewRequest = function(route, whereClause, limit, offset) {
         var params = {
           where: whereClause,
           limit: limit,
           offset: offset,
-          network_code: networkInfo.code,
+          network_code: networkInfo.code
         };
         var qs = $httpParamSerializer(params);
 

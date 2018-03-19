@@ -29,6 +29,7 @@ class AppUser(ndb.Model):
   date_acquired = ndb.DateTimeProperty(auto_now=True)
 
 
+
 class AppCredential(ndb.Model):
   """Implements AppCredential.
 

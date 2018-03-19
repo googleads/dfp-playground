@@ -26,20 +26,22 @@ from utils import retry
 class APIHandler(object):
   """Handler for the DFP API using the DFP Client Libraries."""
 
-  def __init__(self, client_id, client_secret, refresh_token, application_name):
+  def __init__(self, client_id, client_secret, user, application_name):
     """Initializes an APIHandler.
 
     Args:
       client_id: The client id retrieved from the Cloud Console.
       client_secret: The client secret retrieved from the Cloud Console.
-      refresh_token: The user's refresh token retrieved from Datastore.
+      user: The models.AppUser retrieved from the Datastore.
       application_name: The name of the AppEngine application.
     """
-    credentials = GoogleRefreshTokenClient(client_id, client_secret,
-                                           refresh_token)
+    credentials = GoogleRefreshTokenClient(
+        client_id, client_secret, user.refresh_token)
+    self.user = user
     self.client = DfpClient(credentials, application_name,
                             cache=suds.cache.NoCache())
     self.page_limit = 25
+
 
   @retry(HTTPException)
   def GetAllNetworks(self):

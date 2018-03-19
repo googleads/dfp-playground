@@ -181,3 +181,23 @@ ul.pagination a[disabled] {
     cursor: not-allowed;
     color: lightgray;
 }
+
+ul.service-list li {
+    padding: 0;
+}
+
+ul.service-list {
+    padding: 0;
+    margin: 0;
+}
+
+.selected-service {
+    border: 1px solid grey;
+}
+
+/* MOE:begin_strip */
+.internal-label::before {
+    content: "[Internal] ";
+    color: #f00;
+}
+/* MOE:end_strip */
