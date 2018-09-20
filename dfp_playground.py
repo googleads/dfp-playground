@@ -33,7 +33,7 @@ from views import PutCredentials
 from views import RevokeOldRefreshTokens
 import webapp2
 
-VERSION = '1.0.6'
+VERSION = '1.0.8'
 
 app = webapp2.WSGIApplication(
     [

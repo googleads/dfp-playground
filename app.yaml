@@ -17,6 +17,9 @@ handlers:
   static_dir: static/css
 - url: /static/js
   static_dir: static/js
+- url: /google806291ba007da9d2.html
+  static_files: static/html/google806291ba007da9d2.html
+  upload: static/html/google806291ba007da9d2.html
 - url: /.*
   script: dfp_playground.app
   login: required
