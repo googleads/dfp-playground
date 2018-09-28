@@ -1,5 +1,5 @@
 google-api-python-client==1.5.1
-googleads==12.2.0
+googleads==10.0.0
 httplib2==0.9.2
 # Specific version of protobuf required to avoid ImportError on google.appengine module
 # See more: https://github.com/GoogleCloudPlatform/gcloud-python/issues/1570#issuecomment-192055672
