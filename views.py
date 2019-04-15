@@ -20,7 +20,7 @@ import os
 import socket
 
 from api_handler import APIHandler
-from googleads import dfp
+from googleads import ad_manager
 from googleads import oauth2
 import jinja2
 from ndb_handler import InitUser
@@ -30,8 +30,8 @@ from ndb_handler import RevokeOldCredentials
 from oauth2client import client
 from utils import oauth2required
 from utils import unpack_row
-from utils import unpack_suds_object
 import webapp2
+from zeep.helpers import serialize_object
 
 from google.appengine.api import app_identity
 from google.appengine.api import users
@@ -55,7 +55,7 @@ _HOSTNAME = app_identity.get_default_version_hostname()
 _FLOW = client.OAuth2WebServerFlow(
     client_id=_CLIENT_ID,
     client_secret=_CLIENT_SECRET,
-    scope=oauth2.GetAPIScope('dfp'),
+    scope=oauth2.GetAPIScope('ad_manager'),
     user_agent='DFP Playground',
     redirect_uri=(
         ('https://' + _HOSTNAME) if _HOSTNAME else 'http://localhost:8008') +
@@ -182,7 +182,8 @@ class APIViewHandler(webapp2.RequestHandler):
     else:
       # construct PQL statement
       where_clause = self.request.get('where', '')
-      statement = dfp.FilterStatement(where_clause, limit=limit, offset=offset)
+      statement = ad_manager.FilterStatement(where_clause, limit=limit,
+                                             offset=offset)
 
       try:
         # throws KeyError if method not found
@@ -205,7 +206,7 @@ class APIViewHandler(webapp2.RequestHandler):
     else:
       # regular case
       return_obj['results'] = [
-          unpack_suds_object(obj) for obj in return_obj['results']
+          serialize_object(obj) for obj in return_obj['results']
       ]
 
     if self.request.get('limit'):

@@ -194,10 +194,3 @@ ul.service-list {
 .selected-service {
     border: 1px solid grey;
 }
-
-/* MOE:begin_strip */
-.internal-label::before {
-    content: "[Internal] ";
-    color: #f00;
-}
-/* MOE:end_strip */

@@ -15,11 +15,11 @@
 """Handlers to make calls against the DoubleClick for Publishers (DFP) API."""
 
 from httplib import HTTPException
-
-from googleads.dfp import DfpClient
-from googleads.dfp import FilterStatement
+from googleads.ad_manager import AdManagerClient
+from googleads.ad_manager import FilterStatement
+from googleads.common import ZeepServiceProxy
 from googleads.oauth2 import GoogleRefreshTokenClient
-import suds.cache
+from requests_toolbelt.adapters import appengine
 from utils import retry
 
 
@@ -38,9 +38,10 @@ class APIHandler(object):
     credentials = GoogleRefreshTokenClient(
         client_id, client_secret, user.refresh_token)
     self.user = user
-    self.client = DfpClient(credentials, application_name,
-                            cache=suds.cache.NoCache())
+    self.client = AdManagerClient(credentials, application_name,
+                            cache=ZeepServiceProxy.NO_CACHE)
     self.page_limit = 25
+    appengine.monkeypatch()
 
 
   @retry(HTTPException)

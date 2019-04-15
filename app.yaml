@@ -1,5 +1,3 @@
-application: auto
-version: auto
 runtime: python27
 api_version: 1
 threadsafe: true
