@@ -1,5 +1,9 @@
 # DFP Playground
 
+**Important Notice:** This repository is now archived. It is no longer
+maintained by Google. It will remain published on GitHub as a read-only
+repository.
+
 This is a project that demonstrates the DoubleClick for Publishers (DFP) API
 to the open source community. It also demonstrates a working example of
 handling an OAuth2 web flow and good usage patterns of highly used services
